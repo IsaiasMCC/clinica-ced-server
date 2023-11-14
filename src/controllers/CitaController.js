@@ -1,5 +1,5 @@
 const { request, response } = require("express");
-const shortid = require('shortid');
+const shortid = require("shortid");
 const { Cita } = require("../models/Cita");
 const { Agenda } = require("../models/Agenda");
 const { Odontologo } = require("../models/Odontologo");
@@ -17,7 +17,6 @@ const crearCita = async (req, res) => {
       .status(400)
       .json({ success: false, message: "odontologo no encontrado" });
   }
-  
 
   let paciente = await Paciente.findAll({ where: { id: paciente_id } });
   if (!paciente) {
@@ -26,11 +25,9 @@ const crearCita = async (req, res) => {
       .json({ success: false, message: "paciente no encontrado" });
   }
 
-
   // Obtener la fecha y hora actual
   const fechaHoraActual = new Date();
   const horaActual = fechaHoraActual.toLocaleTimeString();
-
 
   const nuevoCita = Cita.build({
     id: shortid.generate(),
@@ -39,7 +36,7 @@ const crearCita = async (req, res) => {
     nota,
     PacienteId: paciente_id,
   });
-  
+
   const cita = await nuevoCita.save();
 
   const nuevaAgenda = Agenda.build({
@@ -100,15 +97,43 @@ const getPacientes = async (req, res) => {
 };
 
 const getOdontologos = async (req, res) => {
-    let odontologo = await Odontologo.findAll();
-  
-    return res.json({ success: true, odontologo });
-  };
+  let odontologo = await Odontologo.findAll();
+
+  return res.json({ success: true, odontologo });
+};
+
+const getCitasByPaciente = async (req, res) => {
+  const { paciente_id } = req.params;
+  const odonto = await Paciente.findOne({ where: { id: paciente_id }});
+  if(!odonto) {
+    return res
+    .status(400)
+    .json({ success: false, message: "paciente_id no es valido" });
+  }
+
+  let pacientes = await Cita.findAll({ where: { PacienteId: paciente_id }});
+  return res.json({ success: true, pacientes });
+}
+
+const getAgendaByOdontologo = async (req, res) => {
+  const { odontologo_id } = req.params;
+  const odonto = await Odontologo.findOne({ where: { id: odontologo_id }});
+  if(!odonto) {
+    return res
+    .status(400)
+    .json({ success: false, message: "odontologo_id no es valido" });
+  }
+
+  let odontologos = await Agenda.findAll({ where: { OdontologoId: odontologo_id }});
+  return res.json({ success: true, odontologos });
+}
 
 module.exports = {
   crearCita,
   crearPaciente,
   crearOdontologo,
   getOdontologos,
-  getPacientes
+  getPacientes,
+  getAgendaByOdontologo,
+  getCitasByPaciente
 };
