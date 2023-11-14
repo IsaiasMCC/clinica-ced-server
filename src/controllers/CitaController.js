@@ -104,29 +104,43 @@ const getOdontologos = async (req, res) => {
 
 const getCitasByPaciente = async (req, res) => {
   const { paciente_id } = req.params;
-  const odonto = await Paciente.findOne({ where: { id: paciente_id }});
-  if(!odonto) {
+  const odonto = await Paciente.findOne({ where: { id: paciente_id } });
+  if (!odonto) {
     return res
-    .status(400)
-    .json({ success: false, message: "paciente_id no es valido" });
+      .status(400)
+      .json({ success: false, message: "paciente_id no es valido" });
   }
 
-  let pacientes = await Cita.findAll({ where: { PacienteId: paciente_id }});
+  let pacientes = await Cita.findAll({ where: { PacienteId: paciente_id } });
   return res.json({ success: true, pacientes });
-}
+};
 
 const getAgendaByOdontologo = async (req, res) => {
   const { odontologo_id } = req.params;
-  const odonto = await Odontologo.findOne({ where: { id: odontologo_id }});
-  if(!odonto) {
+  const odonto = await Odontologo.findOne({ where: { id: odontologo_id } });
+  if (!odonto) {
     return res
-    .status(400)
-    .json({ success: false, message: "odontologo_id no es valido" });
+      .status(400)
+      .json({ success: false, message: "odontologo_id no es valido" });
   }
 
-  let odontologos = await Agenda.findAll({ where: { OdontologoId: odontologo_id }});
+  let odontologos = await Agenda.findAll({
+    where: { OdontologoId: odontologo_id },
+  });
   return res.json({ success: true, odontologos });
-}
+};
+
+const getCitas = async (req, res) => {
+  let citas = await Cita.findAll({
+    include: [
+      {
+        model: Paciente,
+        //as: "Pacientes", // Esto debe coincidir con el alias que estableciste en la relación
+      },
+    ],
+  });
+  return res.json({ success: true, citas });
+};
 
 module.exports = {
   crearCita,
@@ -135,5 +149,6 @@ module.exports = {
   getOdontologos,
   getPacientes,
   getAgendaByOdontologo,
-  getCitasByPaciente
+  getCitasByPaciente,
+  getCitas,
 };

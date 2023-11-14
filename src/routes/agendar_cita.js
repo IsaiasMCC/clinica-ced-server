@@ -5,7 +5,7 @@ const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 
-const { crearCita, crearPaciente, getOdontologos, getPacientes, crearOdontologo, getAgendaByOdontologo, getCitasByPaciente } = require('../controllers/CitaController');
+const { crearCita, crearPaciente, getOdontologos, getPacientes, crearOdontologo, getAgendaByOdontologo, getCitasByPaciente, getCitas } = require('../controllers/CitaController');
 
 router.post('/agendar_cita', [
     check('fecha', 'El campo fecha es obligatorio').not().isEmpty(),
@@ -35,6 +35,7 @@ router.get('/paciente',getPacientes);
 
 router.get('/agendas/:odontologo_id',getAgendaByOdontologo);
 router.get('/citas/:paciente_id',getCitasByPaciente);
+router.get('/citas',getCitas);
 
 
 module.exports = router;
