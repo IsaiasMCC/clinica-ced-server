@@ -3,7 +3,7 @@ const shortid = require("shortid");
 const { Cita } = require("../models/Cita");
 const { Agenda } = require("../models/Agenda");
 const { Odontologo } = require("../models/Odontologo");
-const { Paciente } = require("../models/paciente");
+const { Paciente } = require("../models/Paciente");
 
 const crearCita = async (req, res) => {
   const { fecha, hora, nota, odontologo_id, paciente_id } = req.body;
