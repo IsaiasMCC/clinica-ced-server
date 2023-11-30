@@ -60,7 +60,34 @@ const crearOdontograma = async (req, res) => {
   return res.json({ success: true, message: "odontograma creado" });
 };
 
+const getOdontogramaByPaciente = async (req, res) => {
+  const { paciente_id } = req.params;
+  
+  let paciente = await Paciente.findAll({ where: { id: paciente_id } });
+  
+  if (!(paciente.length > 0)) {
+    return res
+      .status(400)
+      .json({ success: false, message: "paciente no encontrado" });
+  }
+
+  let odontograma = await Odontograma.findAll( { where: { PacienteId: paciente_id } });
+  let detalles = [];
+  let detalles2 = [];
+  if( odontograma.length > 0) {
+    for (let index = 0; index < odontograma.length; index++) {
+      const element = odontograma[index];
+      let detall = await PiezaDental.findAll({ where: { OdontogramaId: element.id }, include: TipoPieza });
+      detalles.push(detall);
+    }
+  }
+
+
+  return res.json({ success: true, detalles } );
+};
+
 
 module.exports = {
   crearOdontograma,
+  getOdontogramaByPaciente
 };
