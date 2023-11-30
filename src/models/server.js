@@ -31,6 +31,7 @@ class Server {
     routes(){
         this.app.use('/api', require('../routes/auth'));
         this.app.use('/api', require('../routes/agendar_cita'));
+        this.app.use('/api', require('../routes/odontograma'));
     }
     sockets(){
         this.io.on('connection', socketController)
@@ -44,8 +45,8 @@ class Server {
             sequelize.sync( { force: false }).then( ()=> {
                 console.log('database connected');
                 console.log('All models were synchronized succesfully');
-            }).catch( ()=> {
-                console.log('error connected database');
+            }).catch( (e)=> {
+                console.log('error connected database', e);
             })
         })
     }

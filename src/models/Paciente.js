@@ -1,6 +1,6 @@
 const { sequelize } = require('../database/connection');
 const { DataTypes } = require('sequelize');
-const { User } = require('./User');
+// const { User } = require('./User');
 
 const Paciente = sequelize.define('Paciente', {
     id: {
@@ -16,14 +16,17 @@ const Paciente = sequelize.define('Paciente', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    UserId: {
+        type: DataTypes.STRING,
+    },
    
 });
 
-User.hasMany(Paciente, {
-    // foreignKey: 'userId'
-});
+// User.hasMany(Paciente, {
+//     // foreignKey: 'userId'
+// });
 
-Paciente.belongsTo(User);
+// Paciente.belongsTo(User);
 
 module.exports = {
     Paciente
