@@ -32,6 +32,7 @@ class Server {
         this.app.use('/api', require('../routes/auth'));
         this.app.use('/api', require('../routes/agendar_cita'));
         this.app.use('/api', require('../routes/odontograma'));
+        this.app.use('/api', require('../routes/bitacora'));
     }
     sockets(){
         this.io.on('connection', socketController)
