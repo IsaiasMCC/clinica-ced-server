@@ -10,6 +10,7 @@ const { crearOdontograma, getOdontogramaByPaciente } = require('../controllers/O
 router.post('/odontograma', [
     check('piezas', 'El campo piezas es obligatorio').isArray(),
     check('paciente_id', 'El campo paciente_id es obligatorio').not().isEmpty(),
+    check('tratamiento', 'El campo tratamiento es obligatorio').not().isEmpty(),
     validarCampos
 ],crearOdontograma);
 

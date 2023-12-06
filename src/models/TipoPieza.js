@@ -14,6 +14,9 @@ const TipoPieza = sequelize.define('Tipo_pieza', {
     estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    tratamiento: {
+        type: DataTypes.STRING
     }
    
 });

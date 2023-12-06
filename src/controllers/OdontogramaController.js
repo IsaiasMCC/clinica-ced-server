@@ -6,7 +6,7 @@ const { PiezaDental } = require("../models/PiezaDental");
 const { TipoPieza } = require("../models/TipoPieza");
 
 const crearOdontograma = async (req, res) => {
-  const { piezas, odontologo_id, paciente_id } = req.body;
+  const { piezas, odontologo_id, paciente_id, tratamiento } = req.body;
 
 //   let odontologo = await Odontologo.findAll({
 //     where: { id: odontologo_id },
@@ -50,6 +50,7 @@ const crearOdontograma = async (req, res) => {
         id: shortid.generate(),
         nombre: tipo.nombre,
         estado: true,
+        tratamiento,
         PiezaDentalId: piezanew.id,
       });
 
