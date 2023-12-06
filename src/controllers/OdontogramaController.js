@@ -71,19 +71,20 @@ const getOdontogramaByPaciente = async (req, res) => {
       .json({ success: false, message: "paciente no encontrado" });
   }
 
-  let odontograma = await Odontograma.findAll( { where: { PacienteId: paciente_id } });
+  let odontograma = await Odontograma.findAll( { where: { PacienteId: paciente_id }, include: Paciente });
   let detalles = [];
-  let detalles2 = [];
+  let paciente_info = "";
   if( odontograma.length > 0) {
     for (let index = 0; index < odontograma.length; index++) {
       const element = odontograma[index];
       let detall = await PiezaDental.findAll({ where: { OdontogramaId: element.id }, include: TipoPieza });
       detalles.push(detall);
     }
+    paciente_info = odontograma[0].Paciente.nombre +" "+ odontograma[0].Paciente.apellido;
   }
+  
 
-
-  return res.json({ success: true, detalles } );
+  return res.status(200).json({ success: true, detalles, paciente: paciente_info } );
 };
 
 
